@@ -25,7 +25,6 @@ def get_latest_news():
         for article in articles:
             title = article["title"]
             description = article["description"]
-            url = article["url"]
             print(f"Title: {title}\nDescription: {description}")
 
 
