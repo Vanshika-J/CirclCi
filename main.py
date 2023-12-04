@@ -1,7 +1,7 @@
 import requests
 
 def get_latest_news():
-    api_key = '0aade89dc52f498da7828b05f8cc6dc1'
+    
     endpoint = 'https://newsapi.org/v2/everything?q=tesla&from=2023-11-01&sortBy=publishedAt&apiKey=0aade89dc52f498da7828b05f8cc6dc1'
     
     response = requests.get(endpoint)
