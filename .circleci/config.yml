@@ -1,20 +1,26 @@
 version: 2.1
 jobs:
-  build:
+  lint:
     docker:
-      - image: python:3.9  # Use an image with required Python version
+      - image: python:3.9
 
     steps:
-      - checkout  # Checkout the code from GitHub
+      - checkout
 
-      # Install dependencies
       - run:
           name: Install dependencies
           command: pip install -r requirements.txt
 
-      # Linting with flake8
       - run:
-          name: Lint with flake8
-          command: flake8 --exclude=venv* .
+          name: Run PEP8 tests
+          command: |
+            flake8 .
+            isort .
+            black --check .
+            interrogate -v
 
-      # Other steps like testing, building, etc. can be added here
+workflows:
+  version: 2
+  lint_workflow:
+    jobs:
+      - lint
