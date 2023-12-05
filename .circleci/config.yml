@@ -21,7 +21,7 @@ jobs:
             flake8 .  # Check PEP8 compliance
             isort . --check-only  # Check import sorting
             black . --check --diff  # Check code formatting
-            interrogate -v -c .  # Check docstring compliance
+            interrogate -v  .  # Check docstring compliance
 
       # Push Docker image to DockerHub (optional)
       - run:
