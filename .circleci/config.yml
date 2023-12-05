@@ -1,26 +1,31 @@
 version: 2.1
-jobs:
-  lint:
-    docker:
-      - image: python:3.9
 
+jobs:
+  build:
+    docker:
+      - image: circleci/python:3.9  # Use Python 3.9 as an example, replace with your preferred image
     steps:
       - checkout
 
+      # Install Docker
       - run:
-          name: Install dependencies
-          command: pip install -r requirements.txt
-
-      - run:
-          name: Run PEP8 tests
+          name: Install Docker
           command: |
-            flake8 .
-            isort .
-            black --check .
-            interrogate -v
+            sudo apt-get update && sudo apt-get install -y docker.io
 
-workflows:
-  version: 2
-  lint_workflow:
-    jobs:
-      - lint
+      # Install PEP8 checking tools and run tests
+      - run:
+          name: Run PEP8 checks
+          command: |
+            pip install flake8 isort black interrogate  # Install necessary libraries
+            flake8 .  # Check PEP8 compliance
+            isort . --check-only  # Check import sorting
+            black . --check --diff  # Check code formatting
+            interrogate -v -c .  # Check docstring compliance
+
+      # Push Docker image to DockerHub (optional)
+      - run:
+          name: Push Docker Image to DockerHub
+          command: |
+            echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+            docker push your-docker-image:tag
